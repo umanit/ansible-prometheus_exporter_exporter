@@ -7,9 +7,9 @@
 
 Deploy prometheus [Exporter Exporter](https://github.com/QubitProducts/exporter_exporter) using ansible.
 
-Exporter exporter, is a Prometheus exporter providing a reverse proxy for others Prometheus exporters, allowing to opening only one port, it also provide TLS communication and Bearer Authentication.
+Exporter exporter is a Prometheus exporter providing a reverse proxy for others Prometheus exporters, allowing to open only one port, it also provide TLS communication and Bearer Authentication.
 
-It's à lightweight and simple alternative to NGINX/Apache reverse proxy, especially when the monitored server is not a web server...
+It's a lightweight and simple alternative to NGINX/Apache reverse proxy, especially when the monitored server is not a web server...
 
 More informations on [Exporter Exporter Readme page](https://github.com/QubitProducts/exporter_exporter#configuration)
 
