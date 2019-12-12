@@ -1,7 +1,7 @@
 # Ansible Role: exporter exporter
 
 [![License](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)](https://opensource.org/licenses/MIT)
-[![GitHub tag](https://img.shields.io/github/tag/cloudalchemy/ansible-node-exporter.svg)](https://github.com/umanit/ansible-prometheus_exporter_exporter/tags)
+[![GitHub tag](https://img.shields.io/github/v/tag/umanit/ansible-prometheus_exporter_exporter)](https://github.com/umanit/ansible-prometheus_exporter_exporter/tags)
 
 ## Description
 
