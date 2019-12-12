@@ -1,0 +1,54 @@
+---
+exporter_exporter_version: 0.3.0
+
+
+exporter_exporter_system_group: "exp-exp"
+exporter_exporter_system_additional_groups: ''
+exporter_exporter_system_user: "{{ exporter_exporter_system_group }}"
+
+
+exporter_exporter_web_listen_address: "0.0.0.0:9999"
+
+exporter_exporter_config_file: /etc/expexp.yaml
+# config.dirs and config.skip-dirs configurations are not supported
+
+exporter_exporter_web_bearer_token: ''
+# OR
+exporter_exporter_web_bearer_token_file: ''
+
+exporter_exporter_web_proxy_path: ''
+exporter_exporter_web_telemetry_path: ''
+
+exporter_exporter_web_tls_ca: ''
+exporter_exporter_web_tls_cert: ''
+exporter_exporter_web_tls_key: ''
+exporter_exporter_web_tls_listen_address: ''
+exporter_exporter_web_tls_verify: false
+
+exporter_exporter_configuration:
+# Mandatory, example
+#  modules:
+#    node:
+#      method: http
+#      http:
+#         port: 9100
+#    mtail:
+#      method: http
+#      http:
+#         port: 3903
+#    cadvisor:
+#      verify: false
+#      method: http
+#      http:
+#         port: 4194
+#    somescript:
+#      method: exec
+#      timeout: 1s
+#      exec:
+#        command: /tmp/myscript.sh
+#        args:
+#          - "myarg1"
+#          - "myarg2"
+#        env:
+#          THING: "1"
+#          THING2: "2"

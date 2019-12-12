@@ -1,0 +1,60 @@
+---
+- name: Install dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  register: _install_dep_packages
+  until: _install_dep_packages is success
+  retries: 5
+  delay: 2
+  with_items: "{{ exporter_exporter_dependencies }}"
+
+- name: Create the exporter_exporter group
+  group:
+    name: "{{ exporter_exporter_system_group }}"
+    state: present
+    system: true
+  when: exporter_exporter_system_group != "root"
+
+- name: Create the exporter_exporter user
+  user:
+    name: "{{ exporter_exporter_system_user }}"
+    group: "{{ exporter_exporter_system_group }}"
+    groups: "{{ exporter_exporter_system_additional_groups }}"
+    append: true
+    shell: /usr/sbin/nologin
+    system: true
+    create_home: false
+    home: /
+  when: exporter_exporter_system_user != "root"
+
+- name: Download exporter_exporter binary to local folder
+  become: false
+  get_url:
+    url: "https://github.com/QubitProducts/exporter_exporter/releases/download/v{{ exporter_exporter_version }}/exporter_exporter-{{ exporter_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+    dest: "/tmp/exporter_exporter-{{ exporter_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+  register: _download_binary
+  until: _download_binary is succeeded
+  retries: 5
+  delay: 2
+  delegate_to: localhost
+  check_mode: false
+
+- name: Unpack exporter_exporter binary
+  become: false
+  unarchive:
+    src: "/tmp/exporter_exporter-{{ exporter_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+    dest: "/tmp"
+    creates: "/tmp/exporter_exporter-{{ exporter_exporter_version }}.linux-{{ go_arch }}/exporter_exporter"
+  delegate_to: localhost
+  check_mode: false
+
+- name: Propagate exporter_exporter binaries
+  copy:
+    src: "/tmp/exporter_exporter-{{ exporter_exporter_version }}.linux-{{ go_arch }}/exporter_exporter"
+    dest: "/usr/local/bin/exporter_exporter"
+    mode: 0755
+    owner: root
+    group: root
+  notify: restart exporter_exporter
+  when: not ansible_check_mode

@@ -1,0 +1,66 @@
+---
+- name: Assert usage of systemd as an init system
+  assert:
+    that: ansible_service_mgr == 'systemd'
+    msg: "This role only works with systemd"
+
+- name: Get systemd version
+  command: systemctl --version
+  changed_when: false
+  check_mode: false
+  register: __systemd_version
+  tags:
+    - skip_ansible_lint
+
+- name: Set systemd version fact
+  set_fact:
+    exporter_exporter_systemd_version: "{{ __systemd_version.stdout_lines[0] | regex_replace('^systemd\\s(\\d+).*$', '\\1') }}"
+
+- name: Check if exporter_exporter is installed
+  stat:
+    path: "/usr/local/bin/exporter_exporter"
+  register: __exporter_exporter_is_installed
+  check_mode: false
+  tags:
+    - exporter_exporter_install
+
+
+- name: Check Exporter Exporter configuration defined
+  assert:
+    that:
+      - exporter_exporter_configuration|length
+
+- name: Gather currently installed exporter_exporter version (if any)
+  command: "/usr/local/bin/exporter_exporter --version"
+  args:
+    warn: false
+  changed_when: false
+  register: __exporter_exporter_current_version_output
+  check_mode: false
+  when: __exporter_exporter_is_installed.stat.exists
+  tags:
+    - exporter_exporter_install
+    - skip_ansible_lint
+
+- block:
+    - name: Get latest release
+      uri:
+        url: "https://api.github.com/repos/QubitProducts/exporter_exporter/releases/latest"
+        method: GET
+        return_content: true
+        status_code: 200
+        body_format: json
+        validate_certs: false
+        user: "{{ lookup('env', 'GH_USER') | default(omit) }}"
+        password: "{{ lookup('env', 'GH_TOKEN') | default(omit) }}"
+      no_log: "{{ not lookup('env', 'MOLECULE_DEBUG') | bool }}"
+      register: _latest_release
+      until: _latest_release.status == 200
+      retries: 5
+
+    - name: "Set exporter_exporter version to {{ _latest_release.json.tag_name[1:] }}"
+      set_fact:
+        exporter_exporter_version: "{{ _latest_release.json.tag_name[1:] }}"
+  when: exporter_exporter_version == "latest"
+  delegate_to: localhost
+  run_once: true

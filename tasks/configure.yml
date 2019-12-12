@@ -1,0 +1,18 @@
+---
+- name: Copy the Exporter Exporter systemd service file
+  template:
+    src: exporter_exporter.service.j2
+    dest: /etc/systemd/system/exporter_exporter.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart exporter_exporter
+
+- name: Create Exporter Exporter main configuration file
+  template:
+    src: expexp.yaml.j2
+    dest: "{{ exporter_exporter_config_file }}"
+    owner: root
+    group: "{{ exporter_exporter_system_user }}"
+    mode: 0640
+  notify: restart exporter_exporter

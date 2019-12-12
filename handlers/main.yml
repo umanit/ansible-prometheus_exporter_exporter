@@ -1,0 +1,7 @@
+---
+- name: restart exporter_exporter
+  become: true
+  systemd:
+    daemon_reload: true
+    name: exporter_exporter
+    state: restarted
