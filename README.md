@@ -58,7 +58,26 @@ All variables which can be overridden are stored in [defaults/main.yml](defaults
 
 Exporter_exporter configuration can be breaked in multiple files in a directory provided to exporter_exporter throught config.dirs and config.skip-dirs, but this role does not support (yet) this.
 
-Creation and deployment of certificates and key used througth exporter_exporter_web_tls_xxx variables is not part of this role.
+This role can deploy node, server certificate and node key, but can't create them.
+
+Following variables are use for this deployment : 
+
+| Name           | Default Value | Description                        |
+| -------------- | ------------- | -----------------------------------|
+| `exporter_exporter_ca_file` | "" | Local path to the file containing CA certificate / server certificate (ie: files/prometheus_server.crt) |
+| `exporter_exporter_cert_file` | "" | Local path to the file containing node certificate (ie: files/prometheus_node.crt) |
+| `exporter_exporter_key_file` | "" | Local path to the file containing node key (ie: files/prometheus_server.key)<br><b>Best practice</b> is to encrypt this file with ansible-vault|
+| `exporter_exporter_certs_path` | "" | Distant path (on monitored nodes) where this role will copy the 2 certificates, must be the same in `exporter_exporter_web_tls_ca` and `exporter_exporter_web_tls_cert` variables (ie: /etc/ssl/certs/) |
+| `exporter_exporter_cert_owner` | "" | Certificates file owner (ie: root) |
+| `exporter_exporter_cert_group` | "" | Certificates file group (ie: exp-exp) |
+| `exporter_exporter_cert_mode` | "" | Certificate file mode (ie: 0640) |
+| `exporter_exporter_key_path` | "" | Distant path (on monitored nodes) where this role will copy the node key, must be the same in `exporter_exporter_web_tls_key` variable (ie: /etc/ssl/private/)  |
+| `exporter_exporter_key_owner` | "" | Key file owner (ie: root) |
+| `exporter_exporter_key_group` | "" | Key file group (ie: exp-exp) |
+| `exporter_exporter_key_mode` | "" | Key file mode (ie: 0640) |
+
+
+Creation of those certificates and key is not part of this role.
 
 
 ## Example

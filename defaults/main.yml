@@ -25,6 +25,23 @@ exporter_exporter_web_tls_key: ''
 exporter_exporter_web_tls_listen_address: ''
 exporter_exporter_web_tls_verify: false
 
+
+exporter_exporter_ca_file: ''
+exporter_exporter_cert_file: ''
+exporter_exporter_key_file: ''
+
+exporter_exporter_certs_path: '/etc/ssl/certs/'
+exporter_exporter_cert_owner: root
+exporter_exporter_cert_group: ssl-cert
+exporter_exporter_cert_mode: 0640
+
+exporter_exporter_key_path: '/etc/ssl/private/'
+exporter_exporter_key_owner: root
+exporter_exporter_key_group: ssl-cert
+exporter_exporter_key_mode: 0640
+
+
+
 exporter_exporter_configuration:
 # Mandatory, example
 #  modules:

@@ -1,0 +1,20 @@
+---
+
+- name: Copy certificates
+  copy:
+    src: "{{ item }}"
+    dest: "{{ exporter_exporter_certs_path }}"
+    mode: "{{ exporter_exporter_cert_mode }}"
+    group: "{{ exporter_exporter_cert_group }}"
+    owner: "{{ exporter_exporter_cert_owner }}"
+  with_items:
+    - "{{ exporter_exporter_ca_file }}"
+    - "{{ exporter_exporter_cert_file }}"
+
+- name: Copy key
+  copy:
+    src: "{{ exporter_exporter_key_file }}"
+    dest: "{{ exporter_exporter_key_path }}"
+    mode: "{{ exporter_exporter_key_mode }}"
+    group: "{{ exporter_exporter_key_group }}"
+    owner: "{{ exporter_exporter_key_owner }}"
