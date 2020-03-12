@@ -21,7 +21,7 @@
 
 - import_tasks:  deploy-certs.yml
   become: true
-  when: exporter_exporter_ca_file | trim != '' and exporter_exporter_cert_file | trim != '' and exporter_exporter_key_file_vaulted | trim != ''
+  when: exporter_exporter_ca_file | trim != '' and exporter_exporter_cert_file | trim != '' and exporter_exporter_key_file | trim != ''
   tags:
     - exporter_exporter_install
   
