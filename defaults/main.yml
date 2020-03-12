@@ -30,15 +30,15 @@ exporter_exporter_ca_file: ''
 exporter_exporter_cert_file: ''
 exporter_exporter_key_file: ''
 
-exporter_exporter_certs_path: '/etc/ssl/certs/'
-exporter_exporter_cert_owner: root
-exporter_exporter_cert_group: ssl-cert
-exporter_exporter_cert_mode: 0640
+exporter_exporter_certs_path: ''
+exporter_exporter_cert_owner: ''
+exporter_exporter_cert_group: ''
+exporter_exporter_cert_mode: ''
 
-exporter_exporter_key_path: '/etc/ssl/private/'
-exporter_exporter_key_owner: root
-exporter_exporter_key_group: ssl-cert
-exporter_exporter_key_mode: 0640
+exporter_exporter_key_path: ''
+exporter_exporter_key_owner: ''
+exporter_exporter_key_group: ''
+exporter_exporter_key_mode: ''
 
 
 

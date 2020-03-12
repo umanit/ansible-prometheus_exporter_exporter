@@ -58,9 +58,8 @@ All variables which can be overridden are stored in [defaults/main.yml](defaults
 
 Exporter_exporter configuration can be breaked in multiple files in a directory provided to exporter_exporter throught config.dirs and config.skip-dirs, but this role does not support (yet) this.
 
-This role can deploy node, server certificate and node key, but can't create them.
+This role can deploy node, server certificate and node key, following variables are use for this deployment : 
 
-Following variables are use for this deployment : 
 
 | Name           | Default Value | Description                        |
 | -------------- | ------------- | -----------------------------------|
