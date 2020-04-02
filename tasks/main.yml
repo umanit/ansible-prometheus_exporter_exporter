@@ -19,15 +19,15 @@
     - exporter_exporter_configure
     - exporter_exporter_run
 
-- import_tasks:  deploy-certs.yml
-  become: true
-  when: exporter_exporter_ca_file | trim != '' and exporter_exporter_cert_file | trim != '' and exporter_exporter_key_file | trim != ''
-  tags:
-    - exporter_exporter_install
-  
 - import_tasks: install.yml
   become: true
   when: (not __exporter_exporter_is_installed.stat.exists) or (__exporter_exporter_current_version_output.stderr_lines[0].split(" ")[2] != exporter_exporter_version)
+  tags:
+    - exporter_exporter_install
+
+- import_tasks: deploy-certs.yml
+  become: true
+  when: exporter_exporter_ca_file | trim != '' and exporter_exporter_cert_file | trim != '' and exporter_exporter_key_file | trim != ''
   tags:
     - exporter_exporter_install
 
