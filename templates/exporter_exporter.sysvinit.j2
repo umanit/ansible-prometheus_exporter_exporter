@@ -1,0 +1,171 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: exporter_exporter
+# Required-Start: $local_fs $network $named $time $syslog
+# Required-Stop: $local_fs $network $named $time $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Prometheus Exporter Exporter
+### END INIT INFO
+PROG="exporter_exporter"
+EXEC="/usr/local/bin/exporter_exporter"
+OPTIONS="{%   if exporter_exporter_web_listen_address|length %}
+    -web.listen-address {{ exporter_exporter_web_listen_address }} \
+{%   else %}
+    -web.listen-address=\
+{%   endif %}
+{%   if exporter_exporter_config_file|length %}
+    -config.file {{ exporter_exporter_config_file }} \
+{%   endif %}
+{%   if exporter_exporter_web_bearer_token|length %}
+    -web.bearer.token {{ exporter_exporter_web_bearer_token }} \
+{%   elif exporter_exporter_web_bearer_token_file|length %}
+    -web.bearer.token-file {{ exporter_exporter_web_bearer_token_file }} \
+{%   endif %}
+{%   if exporter_exporter_web_proxy_path|length %}
+    -web.proxy-path {{ exporter_exporter_web_proxy_path }} \
+{%   endif %}
+{%   if exporter_exporter_web_telemetry_path|length %}
+    -web.telemetry-path {{ exporter_exporter_web_telemetry_path }} \
+{%   endif %}
+{%   if exporter_exporter_web_tls_ca|length %}
+    -web.tls.ca {{ exporter_exporter_web_tls_ca }} \
+{%   endif %}
+{%   if exporter_exporter_web_tls_cert|length %}
+    -web.tls.cert {{ exporter_exporter_web_tls_cert }} \
+{%   endif %}
+{%   if exporter_exporter_web_tls_key|length %}
+    -web.tls.key  {{ exporter_exporter_web_tls_key }} \
+{%   endif %}
+{%   if exporter_exporter_web_tls_listen_address|length %}
+    -web.tls.listen-address {{ exporter_exporter_web_tls_listen_address }} \
+{%   endif %}
+{%   if exporter_exporter_web_tls_verify %}
+    -web.tls.verify \
+{%   endif %}"
+DESC="Prometheus Exporter Exporter"
+USER="{{ exporter_exporter_system_user }}"
+GROUP="{{ exporter_exporter_system_group }}"
+LOGFILE="/var/log/exporter_exporter.log"
+
+# Source function library.
+if [ -e /etc/rc.d/init.d/functions ]; then
+  . /etc/rc.d/init.d/functions
+elif [ -e /lib/lsb/init-functions ]; then
+  . /lib/lsb/init-functions
+fi
+
+# Choose correct location for lock file
+if [ -d /var/lock/subsys ]; then
+  LOCKFILE="/var/lock/subsys/$PROG/$PROG.lock"
+else
+  LOCKFILE="/var/run/$PROG/$PROG.lock"
+fi
+if [ ! -d `dirname $LOCKFILE` ]; then
+  mkdir -p `dirname $LOCKFILE`
+  chown -R $USER:$GROUP `dirname $LOCKFILE`
+fi
+
+
+is_suse="no"
+if [ -e /etc/SuSE-release ]; then
+  is_suse="yes"
+fi
+
+start() {
+  if [ -f $LOCKFILE ]; then
+    PID=$(cat $LOCKFILE)
+        if [ -z "$(ps axf | grep -w ${PID} | grep -v grep)" ]; then
+            echo "$PROG process is dead but stale lockfile exists: $LOCKFILE"
+        else
+            echo "$PROG is already running!"
+        fi
+  else
+    echo "Starting $PROG "
+    if [ "x${is_suse}" = "xyes" ]; then
+      start_daemon -p ${LOCKFILE} -u ${USER} -l $LOGFILE $EXEC $OPTIONS > $LOGFILE 2>&1  &
+    elif type start-stop-daemon >/dev/null 2>&1; then
+      start-stop-daemon --chuid $USER:$GROUP --no-close --background --start --name $PROG --pidfile $LOCKFILE --make-pidfile --exec $EXEC -- $OPTIONS > $LOGFILE 2>&1 &
+    else
+      daemon --user=$USER $EXEC $OPTIONS > $LOGFILE 2>&1  &
+    fi
+    retval=$?
+    echo $! > $LOCKFILE
+  fi
+}
+
+stop() {
+  if [ ! -f $LOCKFILE ]; then
+    return 0
+  else
+   PID=$(cat $LOCKFILE)
+    if [ -z "$(ps axf | grep -w ${PID} | grep -v grep)" ]; then
+     echo "Already stopped, stale lock file removed $LOCKFILE"
+     rm -f $LOCKFILE
+    else
+      echo -n "Stopping $PROG "
+      if [ "x${is_suse}" = "xyes" ]; then
+          killproc -p ${LOCKFILE} -t 90 $EXEC
+      elif type start-stop-daemon >/dev/null 2>&1; then
+          start-stop-daemon --stop --name ${PROG} --pidfile ${LOCKFILE} --exec ${EXEC}
+      elif [ -e /etc/redhat-release ]; then
+          killproc -d 90 ${PROG}
+      else
+          killproc -p ${PROG}
+      fi
+      retval=$?
+      echo
+      test $retval -eq 0 && rm -f $LOCKFILE
+      return $retval
+    fi
+  fi
+}
+
+restart ()
+{
+if [ -f $LOCKFILE ]; then
+  stop
+  sleep 2
+  start
+else
+  start
+fi
+}
+
+status() {
+  if [ -f $LOCKFILE ]; then
+      PID=$(cat $LOCKFILE)
+          if [ -z "$(ps axf | grep -w ${PID} | grep -v grep)" ]; then
+              echo "$PROG process is dead but stale lockfile exists: $LOCKFILE"
+          else    
+              echo "$PROG is running"
+          fi
+  else
+      return 0
+  fi
+}
+
+
+force_reload() {
+    restart
+}
+
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status
+    ;;
+  restart)
+    restart
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+esac
+

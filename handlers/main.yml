@@ -1,7 +1,17 @@
 ---
-- name: restart exporter_exporter
+- name: restart exporter_exporter systemd service
   become: true
   systemd:
     daemon_reload: true
     name: exporter_exporter
     state: restarted
+  listen: restart exporter_exporter
+  when: ansible_service_mgr == 'systemd' and not ansible_check_mode
+
+- name: restart exporter_exporter service
+  become: true
+  service:
+    name: exporter_exporter
+    state: restarted
+  listen: restart exporter_exporter
+  when: ansible_service_mgr != 'systemd' and not ansible_check_mode
