@@ -7,3 +7,13 @@ go_arch_map:
   armv6l: 'armv6'
 
 go_arch: "{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
+
+_exporter_exporter_systemd_service:
+  file: "/etc/systemd/system/exporter_exporter.service"
+  mode: "0644"
+_exporter_exporter_sysvinit_service:
+  file: "/etc/init.d/exporter_exporter"
+  mode: "0755"
+_exporter_exporter_upstart_service:
+  file: "/etc/init/exporter_exporter.conf"
+  mode: "0644"

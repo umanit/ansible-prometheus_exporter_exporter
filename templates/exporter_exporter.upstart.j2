@@ -1,0 +1,51 @@
+{{ ansible_managed | comment }}
+description "Prometheus Exporter Exporter"
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [016]
+
+respawn
+respawn limit 10 5
+{% if exporter_exporter_upstart_version | int >= 1.4 %}
+setuid {{ exporter_exporter_system_user }}
+setgid {{ exporter_exporter_system_group }}
+{% endif %}
+
+exec \
+{% if exporter_exporter_upstart_version | int < 1.4 %}
+su -s /bin/sh -c 'exec "$0" "$@"' {{ exporter_exporter_system_user }} -- \
+{% endif %}
+/usr/local/bin/exporter_exporter \
+{%   if exporter_exporter_web_listen_address|length %}
+    -web.listen-address {{ exporter_exporter_web_listen_address }} \
+{%   else %}
+    -web.listen-address=\
+{%   endif %}
+{%   if exporter_exporter_config_file|length %}
+    -config.file {{ exporter_exporter_config_file }} \
+{%   endif %}
+{%   if exporter_exporter_web_bearer_token|length %}
+    -web.bearer.token {{ exporter_exporter_web_bearer_token }} \
+{%   elif exporter_exporter_web_bearer_token_file|length %}
+    -web.bearer.token-file {{ exporter_exporter_web_bearer_token_file }} \
+{%   endif %}
+{%   if exporter_exporter_web_proxy_path|length %}
+    -web.proxy-path {{ exporter_exporter_web_proxy_path }} \
+{%   endif %}
+{%   if exporter_exporter_web_telemetry_path|length %}
+    -web.telemetry-path {{ exporter_exporter_web_telemetry_path }} \
+{%   endif %}
+{%   if exporter_exporter_web_tls_ca|length %}
+    -web.tls.ca {{ exporter_exporter_web_tls_ca }} \
+{%   endif %}
+{%   if exporter_exporter_web_tls_cert|length %}
+    -web.tls.cert {{ exporter_exporter_web_tls_cert }} \
+{%   endif %}
+{%   if exporter_exporter_web_tls_key|length %}
+    -web.tls.key  {{ exporter_exporter_web_tls_key }} \
+{%   endif %}
+{%   if exporter_exporter_web_tls_listen_address|length %}
+    -web.tls.listen-address {{ exporter_exporter_web_tls_listen_address }} \
+{%   endif %}
+{%   if exporter_exporter_web_tls_verify %}
+    -web.tls.verify \
+{%   endif %}

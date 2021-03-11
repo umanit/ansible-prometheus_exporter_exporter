@@ -40,20 +40,20 @@ All variables which can be overridden are stored in [defaults/main.yml](defaults
 | Name           | Default Value | Description                        |
 | -------------- | ------------- | -----------------------------------|
 | `exporter_exporter_version` | 0.3.0 | Used to install Exporter exporter package. Also accepts latest as parameter. |
-| `exporter_exporter_system_group` | "exp-exp" | System group used to run exporter_exporter <br>(used to launch exporter_exporter binary in systemd service unit file)|
-| `exporter_exporter_system_user` | "exp-exp" | System user used to run exporter_exporter <br>(used to launch exporter_exporter binary in systemd service unit file)|
-| `exporter_exporter_system_additional_groups` | "" | Additional system group of user used to run exporter_exporter (example: ssl-cert to allow reading certificate, used to  launch exporter_exporter binary in systemd service unit file) |
-| `exporter_exporter_web_listen_address` | "0.0.0.0:9999" | Address on which node exporter will listen (HTTP), leave empty and provide `exporter_exporter_web_tls_listen_address` for HTTPS connection only <br>(used to launch exporter_exporter binary in systemd service unit file) |
-| `exporter_exporter_config_file` | "/etc/expexp.yaml" | File containing exporter_exporter configuration, managed with this role throught `exporter_exporter_configuration` variable <br>(used to launch exporter_exporter binary in systemd service unit file) |
-| `exporter_exporter_web_bearer_token` | "" | Token to provide to Bearer authentication <br>(mutually exclusive with `exporter_exporter_web_bearer_token_file` variable, used to launch exporter_exporter binary in systemd service unit file)|
-| `exporter_exporter_web_bearer_token_file` | "" | File containing Bearer token for authentication <br>(mutually exclusive with `exporter_exporter_web_bearer_token` variable, managment of the file not provided by this role, used to  launch exporter_exporter binary in systemd service unit file) |
-| `exporter_exporter_web_proxy_path` | "" | URL to listen on for proxy HTTP requests. <br>(default "/proxy" in exporter_exporter if not provided, used to  launch exporter_exporter binary in systemd service unit file)|
-| `exporter_exporter_web_telemetry_path` | "" | URL to listen on for metrics of exporter_exporter itself. <br>(default "/metrics" in exporter_exporter if not provided, used to  launch exporter_exporter binary in systemd service unit file) |
-| `exporter_exporter_web_tls_ca` | "" | Full path of file containing CA certificate <br>(ie: Prometheur server cert if self-signed certificate are used, used to  launch exporter_exporter binary in systemd service unit file) |
-| `exporter_exporter_web_tls_cert` | "" | Full path of file containing certificate used by exporter_exporter <br>(ie: Node certificate, used to  launch exporter_exporter binary in systemd service unit file) |
-| `exporter_exporter_web_tls_key` | "" | Full path of file containing key used by exporter_exporter <br>(ie: Node key, used to  launch exporter_exporter binary in systemd service unit file) |
-| `exporter_exporter_web_tls_listen_address` | "" | Address on which node exporter will listen for TLS connections (HTTPS), optionnal, 0.0.0.0:9998 is usualy used <br>(used to launch exporter_exporter binary in systemd service unit file) |
-| `exporter_exporter_web_tls_verify` | "" | Disable client verification <br>(?, used to launch exporter_exporter binary in systemd service unit file) |
+| `exporter_exporter_system_group` | "exp-exp" | System group used to run exporter_exporter <br>(used to launch exporter_exporter binary in service unit file)|
+| `exporter_exporter_system_user` | "exp-exp" | System user used to run exporter_exporter <br>(used to launch exporter_exporter binary in service unit file)|
+| `exporter_exporter_system_additional_groups` | "" | Additional system group of user used to run exporter_exporter (example: ssl-cert to allow reading certificate, used to  launch exporter_exporter binary in service unit file) |
+| `exporter_exporter_web_listen_address` | "0.0.0.0:9999" | Address on which exporter exporter will listen (HTTP), leave empty and provide `exporter_exporter_web_tls_listen_address` for HTTPS connection only <br>(used to launch exporter_exporter binary in service unit file) |
+| `exporter_exporter_config_file` | "/etc/expexp.yaml" | File containing exporter_exporter configuration, managed with this role throught `exporter_exporter_configuration` variable <br>(used to launch exporter_exporter binary in service unit file) |
+| `exporter_exporter_web_bearer_token` | "" | Token to provide to Bearer authentication <br>(mutually exclusive with `exporter_exporter_web_bearer_token_file` variable, used to launch exporter_exporter binary in service unit file)|
+| `exporter_exporter_web_bearer_token_file` | "" | File containing Bearer token for authentication <br>(mutually exclusive with `exporter_exporter_web_bearer_token` variable, managment of the file not provided by this role, used to  launch exporter_exporter binary in service unit file) |
+| `exporter_exporter_web_proxy_path` | "" | URL to listen on for proxy HTTP requests. <br>(default "/proxy" in exporter_exporter if not provided, used to  launch exporter_exporter binary in service unit file)|
+| `exporter_exporter_web_telemetry_path` | "" | URL to listen on for metrics of exporter_exporter itself. <br>(default "/metrics" in exporter_exporter if not provided, used to  launch exporter_exporter binary in service unit file) |
+| `exporter_exporter_web_tls_ca` | "" | Full path of file containing CA certificate <br>(ie: Prometheur server cert if self-signed certificate are used, used to  launch exporter_exporter binary in service unit file) |
+| `exporter_exporter_web_tls_cert` | "" | Full path of file containing certificate used by exporter_exporter <br>(ie: Node certificate, used to  launch exporter_exporter binary in service unit file) |
+| `exporter_exporter_web_tls_key` | "" | Full path of file containing key used by exporter_exporter <br>(ie: Node key, used to  launch exporter_exporter binary in service unit file) |
+| `exporter_exporter_web_tls_listen_address` | "" | Address on which exporter exporter will listen for TLS connections (HTTPS), optionnal, 0.0.0.0:9998 is usualy used <br>(used to launch exporter_exporter binary in service unit file) |
+| `exporter_exporter_web_tls_verify` | "" | Disable client verification <br>(?, used to launch exporter_exporter binary in service unit file) |
 | `exporter_exporter_configuration` | "" | YAML configuration set in `exporter_exporter_config_file` [example provided in Exporter Exporter Readme](https://github.com/QubitProducts/exporter_exporter#configuration) |
 
 Exporter_exporter configuration can be breaked in multiple files in a directory provided to exporter_exporter throught config.dirs and config.skip-dirs, but this role does not support (yet) this.
