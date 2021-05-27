@@ -1,12 +1,9 @@
 ---
-exporter_exporter_version: 0.3.0
-
 exporter_exporter_version: 0.4.2
 
 exporter_exporter_system_group: "exp-exp"
 exporter_exporter_system_additional_groups: ''
 exporter_exporter_system_user: "{{ exporter_exporter_system_group }}"
-
 
 exporter_exporter_web_listen_address: "0.0.0.0:9999"
 
@@ -40,8 +37,6 @@ exporter_exporter_key_path: ''
 exporter_exporter_key_owner: ''
 exporter_exporter_key_group: ''
 exporter_exporter_key_mode: ''
-
-
 
 exporter_exporter_configuration:
 # Mandatory, example
