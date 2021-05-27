@@ -1,6 +1,7 @@
 ---
 galaxy_info:
-  author: Yoann DAVID
+  author: yoann_david
+  role_name: ansible_role_tenable_agent
   description: Prometheus Exporter Exporter
   license: MIT
   company: none
