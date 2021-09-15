@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   vars:
-    exporter_exporter_base_download_url: https://f001.backblazeb2.com/file/steinbrueckri-public-share/exporter_exporter
+    exporter_exporter_base_download_url: https://f001.backblazeb2.com/file/steinbrueckri-public-share/exporter_exporter/exporter_exporter-0.4.2.linux-amd64.tar.gz
     exporter_exporter_configuration:
       modules:
         node:
