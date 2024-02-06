@@ -32,8 +32,6 @@
 
 - name: Gather currently installed exporter_exporter version (if any)
   command: "/usr/local/bin/exporter_exporter --version"
-  args:
-    warn: false
   changed_when: false
   register: __exporter_exporter_current_version_output
   check_mode: false
