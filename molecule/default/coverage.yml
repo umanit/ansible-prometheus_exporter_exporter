@@ -1,0 +1,14 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    exporter_exporter_configuration:
+      modules:
+        node:
+          method: http
+          http:
+            port: 9100
+  become: true
+
+  roles:
+    - ansible-prometheus_exporter_exporter
